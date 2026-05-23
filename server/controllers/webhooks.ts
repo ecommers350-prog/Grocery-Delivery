@@ -25,7 +25,7 @@ export const stripeWebhook = async (request: Request, response: Response) => {
         // Handle the event
         switch (event.type) {
             case 'payment_intent.succeeded':
-                const paymentIntent = event.data.object as Stripe.PaymentIntent;
+                const paymentIntent = event.data.object as any;
                 const paymentIntentId = paymentIntent.id
 
                 // Getting Session Metadata
@@ -63,7 +63,7 @@ export const stripeWebhook = async (request: Request, response: Response) => {
                 break;
             case 'payment_intent.canceled':
             case 'payment_intent.payment_failed': {
-                const paymentIntentFailure = event.data.object as Stripe.PaymentIntent;
+                const paymentIntentFailure = event.data.object as any
                 const paymentIntentFailureId = paymentIntentFailure.id
 
                 // Getting Session Metadata
