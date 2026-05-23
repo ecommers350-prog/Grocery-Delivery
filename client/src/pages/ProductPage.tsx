@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import type { Product } from "../types";
 import { useCart } from "../context/CartContext";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { dummyProducts } from "../assets/assets";
 import Loading from "../components/Loading";
 import { ArrowLeftIcon, ArrowRightIcon, HomeIcon, LeafIcon, MinusIcon, PlusIcon, ShoppingCartIcon, StarIcon } from "lucide-react";
 import DummyReviewsSection from "../assets/DummyReviewsSection";
