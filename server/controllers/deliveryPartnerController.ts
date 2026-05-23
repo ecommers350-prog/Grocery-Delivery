@@ -166,7 +166,7 @@ export const updateDeliveryStatus = async (req: Request, res: Response) => {
 
     const updatedOrder = await prisma.order.update({
         where: { id: order!.id },
-        data: { status, statusHistorv: history }
+        data: { status, statusHistory: history }
     })
     res.json({ order: updatedOrder })
 }

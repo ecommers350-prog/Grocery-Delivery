@@ -35,9 +35,7 @@ export const register = async (req: Request, res: Response) => {
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: {
-        email: email.toLowerCase(),
-      },
+      where: { email: email.toLowerCase() },
     });
 
     if (existingUser) {
@@ -58,7 +56,7 @@ export const register = async (req: Request, res: Response) => {
     delete userData.password
     userData.isAdmin = getAdminStatus(userData.email)
 
-    res.status(201).json({usre: userData, token})
+    res.status(201).json({user: userData, token})
 };
 
 // LOGIN
@@ -89,5 +87,5 @@ export const login = async (req: Request, res: Response) => {
     delete userData.password
     userData.isAdmin = getAdminStatus(userData.email)
 
-    res.json({usre: userData, token})
+    res.json({user: userData, token})
 };

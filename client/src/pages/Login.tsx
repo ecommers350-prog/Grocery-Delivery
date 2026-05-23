@@ -1,7 +1,9 @@
 import React, { useState } from "react"
 import { heroSectionData } from "../assets/assets"
 import { Link } from "react-router-dom"
-import { BikeIcon, Loader2, Loader2Icon, LockIcon, Mail, UserIcon } from "lucide-react"
+import { BikeIcon, Loader2Icon, LockIcon, Mail, UserIcon } from "lucide-react"
+import { useAuth } from "../context/AuthContext"
+import toast from "react-hot-toast"
 
 const Login = () => {
     const [isLoginState, setIsLoginState] = useState(true)
@@ -10,10 +12,22 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
 
+    const {login, register} = useAuth()
+
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault()
         setLoading(true);
-        setTimeout(() => window.location.href = "/", 1000)
+        try {
+            if (isLoginState) {
+                await login(email, password)
+            }else{
+                await register(name, email, password)
+            }
+        } catch (error : any) {
+            toast.error(error?.response?.data?.message || error?.message)
+        }finally{
+            setLoading(false)
+        }
     }
     return (
         <div className="min-h-screen flex">
@@ -36,19 +50,19 @@ const Login = () => {
                             <span className="text-2xl font-semibold text-app-green">Instacart</span>
                         </Link>
                         <h1 className="text-2xl font-semibold text-app-green mb-2">
-                            {isLoginState ? 'Sign up for an account': 'Sign in to your account'}
+                            {isLoginState ? 'Sign in to your account' : 'Sign up for an account'}
                         </h1>
                         <p className="text-sm text-app-text-light">
-                            {isLoginState ? "Already have an account?" :"Don't have an account? " }
+                            {isLoginState ? "Don't have an account?" : "Already have an account?" }
                             <button onClick={() => setIsLoginState(!isLoginState)} className="text-orange-500 ml-1 font-semibold hover:text-orange-600 transition-colors">
-                                {isLoginState ? "Sign In" : "Create One"}
+                                {isLoginState ? "Create One" : "Sign In"}
                             </button>
                         </p>
                     </div>
 
                     {/* Login / Register Form */}
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        {isLoginState && (
+                        {!isLoginState && (
                             <label className="text-sm flex flex-col gap-1" >
                                 Name
                                 <div className="relative">

@@ -58,14 +58,14 @@ export const updateDeliveryPartner = async (req: Request, res: Response) => {
     if (name) data.name = name;
     if (phone) data.phone = phone;
     if (vehicleType) data.vehicleType = vehicleType;
-    if (isActive) data.isActive = isActive;
+    data.isActive = isActive;
 
     try {
         const partner = await prisma.deliveryPartner.update({
             where: { id: req.params.id as string },
             data
         })
-
+        res.json({partner})
     } catch (error) {
         res.status(404).json({ message: "Partner not found" })
     }
@@ -91,7 +91,7 @@ export const assignDeliveryPartner = async (req: Request, res: Response) => {
     const history: any[] = Array.isArray(order!.statusHistory) ? order!.statusHistory : [];
 
     if (order!.status === "Placed" || order!.status === "Confirmed") {
-        status = "'Assignrd";
+        status = "Assigned";
         history.push ({
             status: "Assigned",
             note: `Assigned to ${partner!.name}`, timestamp: new Date()
