@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 const API_URL =
-    import.meta.env.VITE_BASE_URL || "http://localhost:3000/api";
+    import.meta.env.VITE_BASE_URL || "http://localhost:5000/api";
 
 const getAuthHeaders = () => ({
     headers: {
