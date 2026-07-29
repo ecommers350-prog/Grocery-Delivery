@@ -17,6 +17,12 @@ const getAuthHeaders = () => ({
     },
 });
 
+const clearDeliverySession = () => {
+    localStorage.removeItem("delivery_token");
+    localStorage.removeItem("delivery_partner");
+    window.location.href = "/delivery/login";
+};
+
 export default function DeliveryDashboard() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
@@ -48,6 +54,11 @@ export default function DeliveryDashboard() {
             setOrders(data.orders);
 
         } catch (error: any) {
+            if (error?.response?.status === 401 || error?.response?.status === 403) {
+                clearDeliverySession();
+                return;
+            }
+
             toast.error(
                 error?.response?.data?.message ||
                 "Failed to load deliveries"
@@ -110,6 +121,11 @@ export default function DeliveryDashboard() {
             toast.success(`Status updated to ${status}`)
             fetchOrders();
         } catch (error: any) {
+            if (error?.response?.status === 401 || error?.response?.status === 403) {
+                clearDeliverySession();
+                return;
+            }
+
             toast.error(error?.response?.data?.message || "Failed");
         };
     }
@@ -125,6 +141,11 @@ export default function DeliveryDashboard() {
             setOtp("");
             fetchOrders();
         } catch (error: any) {
+            if (error?.response?.status === 401 || error?.response?.status === 403) {
+                clearDeliverySession();
+                return;
+            }
+
             toast.error(error?.response?.data?.message || error?.message);
         } finally {
             setSubmitting(false)
@@ -142,6 +163,11 @@ export default function DeliveryDashboard() {
             setCancelReason("");
             fetchOrders();
         } catch (error: any) {
+            if (error?.response?.status === 401 || error?.response?.status === 403) {
+                clearDeliverySession();
+                return;
+            }
+
             toast.error(error?.response?.data?.message || "Failed");
         } finally {
             setSubmitting(false)
